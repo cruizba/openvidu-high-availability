@@ -286,7 +286,8 @@ public class MyRestController {
 	}
 
 	/**
-	 * This
+	 * This Http client is initialized to accept insecure SSL certificates. It is
+	 * used only in method {@link MyRestController#getClusterStatus()}
 	 */
 	private void initInsecureHttpClient() {
 		TrustStrategy trustStrategy = new TrustStrategy() {

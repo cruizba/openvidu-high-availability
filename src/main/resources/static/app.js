@@ -182,30 +182,6 @@ function getToken(callback) {
 	);
 }
 
-function refreshClusterStatus() {
-	httpRequest(
-		'GET',
-		'api/cluster-status',
-		undefined,
-		'Request of cluster info gone WRONG:',
-		res => {
-			console.log('Request of cluster info gone WELL', res);
-			var stringResponse = 'Number of Media Nodes: ' + res.numberOfElements + '\n';
-			stringResponse += '─────────────────────\n';
-			for (var mediaNode of res.content) {
-				stringResponse += '    • ID:' + mediaNode.id + '\n';
-				stringResponse += '    • Environment ID: ' + mediaNode.environmentId + '\n';
-				stringResponse += '    • IP: ' + mediaNode.ip + '\n';
-				stringResponse += '    • Connected: ' + mediaNode.connected + '\n';
-				stringResponse += '    • CPU load: ' + mediaNode.load + ' %\n';
-				stringResponse += '    • Status: ' + mediaNode.status + '\n';
-				stringResponse += '─────────────────────\n';
-			}
-			$('#textarea-cluster').text(stringResponse);
-		}
-	);
-}
-
 function tryToReconnect(waitTimeoutMs) {
 	httpRequest(
 		'POST',
@@ -299,10 +275,6 @@ function pushEvent(event) {
 function clearEventsTextarea() {
 	$('#textarea-events').text('');
 	events = '';
-}
-
-function clearClusterTextarea() {
-	$('#textarea-cluster').text('');
 }
 
 /* APPLICATION BROWSER METHODS */

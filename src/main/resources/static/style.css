@@ -396,18 +396,6 @@ textarea {
 	width: 30%;
 }
 
-#textarea-cluster-container {
-	width: 68%;
-}
-
-#textarea-cluster-container button:first-child {
-	margin-right: 61px;
-}
-
-#textarea-cluster {
-	white-space: pre;
-}
-
 .textarea-container button {
 	position: absolute;
 	top: 1px;

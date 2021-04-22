@@ -1,34 +1,11 @@
 package io.openvidu.multi.master.sample.app;
 
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 
-import javax.net.ssl.SSLContext;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.ssl.SSLContextBuilder;
-import org.apache.http.ssl.TrustStrategy;
-import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 
 import io.openvidu.java.client.OpenVidu;
 import io.openvidu.java.client.OpenViduHttpException;
@@ -60,8 +35,6 @@ public class MyRestController {
 	private String OPENVIDU_URL;
 	// Secret shared with our OpenVidu server
 	private String SECRET;
-	// Custom http client to consume REST API not supported by openvidu-java-client
-	private HttpClient HTTP_CLIENT;
 
 	// OpenVidu object as entrypoint of the SDK
 	private OpenVidu openVidu;
@@ -74,7 +47,6 @@ public class MyRestController {
 		this.SECRET = secret;
 		this.OPENVIDU_URL = openviduUrl;
 		this.openVidu = new OpenVidu(OPENVIDU_URL, SECRET);
-		this.initInsecureHttpClient();
 		log.info("Connecting to OpenVidu Pro Multi Master cluster at {}", OPENVIDU_URL);
 	}
 
@@ -136,25 +108,6 @@ public class MyRestController {
 	}
 
 	/**
-	 * This method returns the Media Nodes information of the cluster
-	 */
-	@RequestMapping(value = "/cluster-status", method = RequestMethod.GET)
-	public ResponseEntity<?> getClusterStatus() throws Exception {
-
-		log.info("Getting cluster status");
-
-		HttpGet request = new HttpGet(this.OPENVIDU_URL + "openvidu/api/media-nodes");
-		HttpResponse response;
-		try {
-			response = HTTP_CLIENT.execute(request);
-		} catch (IOException e) {
-			return getErrorResponse(e);
-		}
-
-		return new ResponseEntity<>(httpResponseToJson(response), HttpStatus.OK);
-	}
-
-	/**
 	 * This is the webhook handler. OpenVidu webhook events are received in this
 	 * method
 	 */
@@ -169,11 +122,13 @@ public class MyRestController {
 		// OpenVidu Server
 		switch (eventName) {
 		case "nodeCrashed":
+			// This async call should be obviously managed in a more appropriate way...
 			new Thread(() -> {
 				handleNodeCrashedEvent(event);
 			}).start();
 			break;
 		case "sessionDestroyed":
+			// This async call should be obviously managed in a more appropriate way...
 			new Thread(() -> {
 				handleSessionDestroyedEvent(event);
 			}).start();
@@ -273,49 +228,6 @@ public class MyRestController {
 		json.addProperty("error", e.getMessage());
 		json.addProperty("exception", e.getClass().getCanonicalName());
 		return new ResponseEntity<>(json, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-
-	private JsonObject httpResponseToJson(HttpResponse response) throws Exception {
-		try {
-			JsonObject json = new Gson().fromJson(EntityUtils.toString(response.getEntity(), "UTF-8"),
-					JsonObject.class);
-			return json;
-		} catch (JsonSyntaxException | ParseException | IOException e) {
-			throw new Exception(e.getMessage(), e.getCause());
-		}
-	}
-
-	/**
-	 * This Http client is initialized to accept insecure SSL certificates. It is
-	 * used only in method {@link MyRestController#getClusterStatus()}
-	 */
-	private void initInsecureHttpClient() {
-		TrustStrategy trustStrategy = new TrustStrategy() {
-			@Override
-			public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-				return true;
-			}
-		};
-
-		CredentialsProvider provider = new BasicCredentialsProvider();
-		UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("OPENVIDUAPP", this.SECRET);
-		provider.setCredentials(AuthScope.ANY, credentials);
-
-		SSLContext sslContext;
-
-		try {
-			sslContext = new SSLContextBuilder().loadTrustMaterial(null, trustStrategy).build();
-		} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
-			throw new RuntimeException(e);
-		}
-
-		RequestConfig.Builder requestBuilder = RequestConfig.custom();
-		requestBuilder = requestBuilder.setConnectTimeout(30000);
-		requestBuilder = requestBuilder.setConnectionRequestTimeout(30000);
-
-		HTTP_CLIENT = HttpClientBuilder.create().setDefaultRequestConfig(requestBuilder.build())
-				.setConnectionTimeToLive(30, TimeUnit.SECONDS).setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-				.setSSLContext(sslContext).setDefaultCredentialsProvider(provider).build();
 	}
 
 }

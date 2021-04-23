@@ -19,7 +19,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
-		<start-class>io.openvidu.recording.java.App</start-class>
+		<start-class>io.openvidu.multi.master.sample.app.App</start-class>
 	</properties>
 
 	<build>

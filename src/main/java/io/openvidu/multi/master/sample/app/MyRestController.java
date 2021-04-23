@@ -209,9 +209,8 @@ public class MyRestController {
 			return getErrorResponse(e1);
 		} catch (OpenViduHttpException e2) {
 			if (404 == e2.getStatus()) {
-				// Invalid sessionId (user left unexpectedly). Session object is not valid
-				// anymore. Clean collection and return error. A new Session should be created
-				this.sessions.remove(session.getSessionId());
+				// The session wasn't found in OpenVidu Server
+				return new ResponseEntity<>(HttpStatus.CONFLICT);
 			}
 			return getErrorResponse(e2);
 		}

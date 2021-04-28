@@ -42,6 +42,18 @@ curl -XPOST -u OPENVIDUAPP:OPENVIDU_SECRET -d '{
 }' 'https://OPENVIDU_PRO_DOMAIN/openvidu/api/restart'
 ```
 
+### Example:
+- `OPENVIDU_SECRET` = `MY_SECRET`
+- `OPENVIDU_PRO_DOMAIN` = `https://example-openvidu.io
+- `SAMPLE_APP_DOMAIN_OR_IP` = `https://my-app.io`
+
+```
+curl -XPOST -u OPENVIDUAPP:MY_SECRET -d '{
+    "OPENVIDU_WEBHOOK": true
+    "OPENVIDU_WEBHOOK_ENDPOINT": "https://my-app.io/api/webhook"
+}' 'https://https://example-openvidu.io/openvidu/api/restart'
+```
+
 ## Test the reconnection capabilities
 
 A session hosted in a Media Node suffering a crash will be automatically re-created and re-located in a different Media Node, without intervention of the final user. For this to work, the OpenVidu Pro cluster must have at least 2 running Media Nodes. To test the reconnection capabilities of the application:

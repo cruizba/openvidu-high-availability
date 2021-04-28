@@ -57,12 +57,12 @@ curl -k -XPOST -u OPENVIDUAPP:OPENVIDU_SECRET -d '{
 ### Example:
 - `OPENVIDU_SECRET` = `MY_SECRET`
 - `OPENVIDU_PRO_DOMAIN` = `https://example-openvidu.io`
-- `SAMPLE_APP_DOMAIN_OR_IP` = `https://my-app.io`
+- `SAMPLE_APP_DOMAIN_OR_IP` = `https://my-app.io:5000`
 
 ```
 curl -k -XPOST -u OPENVIDUAPP:MY_SECRET -d '{
     "OPENVIDU_WEBHOOK": true,
-    "OPENVIDU_WEBHOOK_ENDPOINT": "https://my-app.io/api/webhook"
+    "OPENVIDU_WEBHOOK_ENDPOINT": "https://my-app.io:5000/api/webhook"
 }' 'https://https://example-openvidu.io/openvidu/api/restart'
 ```
 

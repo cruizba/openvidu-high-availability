@@ -30,6 +30,8 @@ mvn clean package
 java -jar target/multi-master-sample-app-*.jar --openvidu.url=https://example-openvidu.io --openvidu.secret=MY_SECRET
 ```
 
+## Configure OpenVidu Pro to use the app
+
 The application by default listens on port 5000 with a self-signed SSL certificate that must be accepted on the browser.
 The application offers the following endpoint to receive OpenVidu Webhook events:
 

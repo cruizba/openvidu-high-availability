@@ -36,10 +36,10 @@ OPENVIDU_WEBHOOK_ENDPOINT=https://SAMPLE_APP_DOMAIN_OR_IP:PORT/api/webhook
 
 To configure this in your multiple OpenVidu Pro Master nodes, you just need to do a `POST` to OpenVidu request with this parameters specified:
 ```
-curl -XPOST -d '{
+curl -XPOST -u OPENVIDUAPP:OPENVIDU_SECRET -d '{
     "OPENVIDU_WEBHOOK": true
     "OPENVIDU_WEBHOOK_ENDPOINT": "https://SAMPLE_APP_DOMAIN_OR_IP:PORT/api/webhook"
-}' 'https://OPENVIDU_DOMAIN/openvidu/api/restart'
+}' 'https://OPENVIDU_PRO_DOMAIN/openvidu/api/restart'
 ```
 
 ## Test the reconnection capabilities

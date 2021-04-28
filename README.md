@@ -17,7 +17,17 @@ To compile and run the app:
 git clone https://github.com/OpenVidu/multi-master-sample-app.git
 cd multi-master-sample-app
 mvn clean package
-java -jar target/multi-master-sample-app-*.jar
+java -jar target/multi-master-sample-app-*.jar --openvidu.url=OPENVIDU_PRO_DOMAIN --openvidu.secret=OPENVIDU_SECRET
+```
+
+### Example
+- `OPENVIDU_PRO_DOMAIN` = `https://example-openvidu.io`
+- `OPENVIDU_SECRET` = `MY_SECRET`
+```
+git clone https://github.com/OpenVidu/multi-master-sample-app.git
+cd multi-master-sample-app
+mvn clean package
+java -jar target/multi-master-sample-app-*.jar --openvidu.url=https://example-openvidu.io --openvidu.secret=MY_SECRET
 ```
 
 The application by default listens on port 5000 with a self-signed SSL certificate that must be accepted on the browser.

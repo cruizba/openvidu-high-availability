@@ -44,7 +44,7 @@ curl -XPOST -u OPENVIDUAPP:OPENVIDU_SECRET -d '{
 
 ### Example:
 - `OPENVIDU_SECRET` = `MY_SECRET`
-- `OPENVIDU_PRO_DOMAIN` = `https://example-openvidu.io
+- `OPENVIDU_PRO_DOMAIN` = `https://example-openvidu.io`
 - `SAMPLE_APP_DOMAIN_OR_IP` = `https://my-app.io`
 
 ```

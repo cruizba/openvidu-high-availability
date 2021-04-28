@@ -24,14 +24,22 @@ The application by default listens on port 5000 with a self-signed SSL certifica
 The application offers the following endpoint to receive OpenVidu Webhook events:
 
 ```
-https://DOMAIN_OR_IP:PORT/api/webhook
+https://SAMPLE_APP_DOMAIN_OR_IP:PORT/api/webhook
 ```
 
 This endpoint must be configured in OpenVidu Pro with property `OPENVIDU_WEBHOOK_ENDPOINT`:
 
 ```
 OPENVIDU_WEBHOOK=TRUE
-OPENVIDU_WEBHOOK_ENDPOINT=https://DOMAIN_OR_IP:PORT/api/webhook
+OPENVIDU_WEBHOOK_ENDPOINT=https://SAMPLE_APP_DOMAIN_OR_IP:PORT/api/webhook
+```
+
+To configure this in your multiple OpenVidu Pro Master nodes, you just need to do a `POST` to OpenVidu request with this parameters specified:
+```
+curl -XPOST -d '{
+    "OPENVIDU_WEBHOOK": true
+    "OPENVIDU_WEBHOOK_ENDPOINT": "https://SAMPLE_APP_DOMAIN_OR_IP:PORT/api/webhook"
+}' 'https://OPENVIDU_DOMAIN/openvidu/api/restart'
 ```
 
 ## Test the reconnection capabilities

@@ -67,9 +67,9 @@ function connectToSessionWithToken(token) {
 		session = null;
 		numVideos = 0;
 		if (event.reason === 'nodeCrashed') {
-			console.warn('Media Node has crashed!');
+			console.warn('Node has crashed!');
 			$('#reconnectionModal').modal('show');
-			tryToReconnect(250);
+			joinSession();
 		} else {
 			$('#join').show();
 			$('#session').hide();
@@ -84,6 +84,7 @@ function connectToSessionWithToken(token) {
 			$('#session-title').text(sessionId);
 			$('#join').hide();
 			$('#session').show();
+			$('#reconnectionModal').modal('hide');
 
 			// Get your own camera stream
 
@@ -178,28 +179,6 @@ function getToken(callback) {
 			token = res['token']; // Get token from response
 			console.log('Request of TOKEN gone WELL (TOKEN:' + token + ')');
 			callback(token); // Continue the join operation
-		}
-	);
-}
-
-function tryToReconnect(waitTimeoutMs) {
-	httpRequest(
-		'POST',
-		'api/reconnect', {
-			sessionId: sessionId
-		},
-		'Request of reconnection after node crash gone WRONG:',
-		res => {
-			token = res['token']; // Get token from response
-			console.log('Request reconnection after node crash gone WELL (TOKEN:' + token + ')');
-			$('#reconnectionModal').modal('hide');
-			connectToSessionWithToken(token);
-		},
-		errorHttp => {
-			if (errorHttp.status === 409) {
-				// Still waiting fot the backend to rebuild the broken session
-				setTimeout(() => tryToReconnect(waitTimeoutMs), waitTimeoutMs);
-			}
 		}
 	);
 }

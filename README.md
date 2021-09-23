@@ -1,6 +1,6 @@
 # openvidu-high-availability
 
-This project exemplifies the reconnection capabilities of an application making use of OpenVidu Pro environment, whenever a node crashes.
+This project exemplifies the reconnection capabilities of an application making use of OpenVidu Enterprise environment, whenever a node crashes.
 
 ## Compile and run the app
 
@@ -32,9 +32,9 @@ java -jar target/openvidu-high-availability-*.jar --openvidu.url=https://example
 
 ## Test the reconnection capabilities
 
-A session hosted in a Media Node suffering a crash will be automatically re-created and re-located in a different Media Node, without intervention of the final user. For this to work, the OpenVidu Pro cluster must have at least 2 running Media Nodes. To test the reconnection capabilities of the application:
+A session hosted in a Media Node suffering a crash will be automatically re-created and re-located in a different Media Node, without intervention of the final user. For this to work, the OpenVidu Enterprise cluster must have at least 2 running Media Nodes. To test the reconnection capabilities of the application:
 
-1. Make sure your OpenVidu Pro cluster has at least 2 different Media Nodes.
+1. Make sure your OpenVidu Enterprise cluster has at least 2 different Media Nodes.
 2. Connect 2 different users to the same session. They should both send and receive each other's video.
 3. Find out in which Media Node the session was located. You can call REST API method [GET Media Nodes](https://docs.openvidu.io/en/latest/reference-docs/REST-API/#get-openviduapimedia-nodes) to do so.
 4. Terminate the machine hosting the session.

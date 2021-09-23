@@ -30,42 +30,6 @@ mvn clean package
 java -jar target/openvidu-high-availability-*.jar --openvidu.url=https://example-openvidu.io --openvidu.secret=MY_SECRET
 ```
 
-## Configure OpenVidu Pro to use the app
-
-The application by default listens on port 5000 with a self-signed SSL certificate that must be accepted on the browser.
-The application offers the following endpoint to receive OpenVidu Webhook events:
-
-```
-https://SAMPLE_APP_DOMAIN_OR_IP:PORT/api/webhook
-```
-
-This endpoint must be configured in OpenVidu Pro with property `OPENVIDU_WEBHOOK_ENDPOINT`:
-
-```
-OPENVIDU_WEBHOOK=TRUE
-OPENVIDU_WEBHOOK_ENDPOINT=https://SAMPLE_APP_DOMAIN_OR_IP:PORT/api/webhook
-```
-
-To configure this in your multiple OpenVidu Pro Master nodes, you just need to do a `POST` to OpenVidu PRO with these parameters specified:
-```
-curl -k -XPOST -u OPENVIDUAPP:OPENVIDU_SECRET -d '{
-    "OPENVIDU_WEBHOOK": true,
-    "OPENVIDU_WEBHOOK_ENDPOINT": "https://SAMPLE_APP_DOMAIN_OR_IP:PORT/api/webhook"
-}' 'https://OPENVIDU_PRO_DOMAIN/openvidu/api/restart'
-```
-
-### Example:
-- `OPENVIDU_SECRET` = `MY_SECRET`
-- `OPENVIDU_PRO_DOMAIN` = `https://example-openvidu.io`
-- `SAMPLE_APP_DOMAIN_OR_IP` = `https://my-app.io:5000`
-
-```
-curl -k -XPOST -u OPENVIDUAPP:MY_SECRET -d '{
-    "OPENVIDU_WEBHOOK": true,
-    "OPENVIDU_WEBHOOK_ENDPOINT": "https://my-app.io:5000/api/webhook"
-}' 'https://https://example-openvidu.io/openvidu/api/restart'
-```
-
 ## Test the reconnection capabilities
 
 A session hosted in a Media Node suffering a crash will be automatically re-created and re-located in a different Media Node, without intervention of the final user. For this to work, the OpenVidu Pro cluster must have at least 2 running Media Nodes. To test the reconnection capabilities of the application:

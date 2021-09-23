@@ -1,4 +1,4 @@
-# multi-master-sample-app
+# openvidu-high-availability
 
 This project exemplifies the reconnection capabilities of an application making use of OpenVidu Pro environment, whenever a node crashes.
 
@@ -14,20 +14,20 @@ This is a SpringBoot application. Prerequisites:
 To compile and run the app:
 
 ```
-git clone https://github.com/OpenVidu/multi-master-sample-app.git
-cd multi-master-sample-app
+git clone https://github.com/OpenVidu/openvidu-high-availability.git
+cd openvidu-high-availability
 mvn clean package
-java -jar target/multi-master-sample-app-*.jar --openvidu.url=OPENVIDU_PRO_DOMAIN --openvidu.secret=OPENVIDU_SECRET
+java -jar target/openvidu-high-availability-*.jar --openvidu.url=OPENVIDU_PRO_DOMAIN --openvidu.secret=OPENVIDU_SECRET
 ```
 
 ### Example
 - `OPENVIDU_PRO_DOMAIN` = `https://example-openvidu.io`
 - `OPENVIDU_SECRET` = `MY_SECRET`
 ```
-git clone https://github.com/OpenVidu/multi-master-sample-app.git
-cd multi-master-sample-app
+git clone https://github.com/OpenVidu/openvidu-high-availability.git
+cd openvidu-high-availability
 mvn clean package
-java -jar target/multi-master-sample-app-*.jar --openvidu.url=https://example-openvidu.io --openvidu.secret=MY_SECRET
+java -jar target/openvidu-high-availability-*.jar --openvidu.url=https://example-openvidu.io --openvidu.secret=MY_SECRET
 ```
 
 ## Configure OpenVidu Pro to use the app

@@ -61,10 +61,10 @@ public class MyRestController {
 		} catch (OpenViduHttpException e) {
 			if (e.getStatus() == 409) {
 				log.info("The session {} already exists. Proceed as normal", sessionId);
-			} else if (e.getStatus() == 503) {
-				log.warn("The node handling the operation crashed while doing so. Retry");
+			} else if (e.getStatus() == 503 || e.getStatus() == 502) {
+				log.warn("The node handling the createSession operation is crashed. Retry");
 				try {
-					Thread.sleep(100);
+					Thread.sleep(75);
 				} catch (InterruptedException e1) {
 				}
 				return getToken(params);
@@ -73,6 +73,7 @@ public class MyRestController {
 				return getErrorResponse(e);
 			}
 		} catch (OpenViduJavaClientException e) {
+			log.error("Unexpected internal error while creating session: {}", e.getMessage());
 			return getErrorResponse(e);
 		}
 		return returnToken(session);
@@ -89,11 +90,20 @@ public class MyRestController {
 
 		} catch (OpenViduJavaClientException e1) {
 			// If internal error generate an error message and return it to client
+			log.error("Unexpected internal error while creating connection: {}", e1.getMessage());
 			return getErrorResponse(e1);
 		} catch (OpenViduHttpException e2) {
 			if (404 == e2.getStatus()) {
 				// The session wasn't found in OpenVidu Server
 				return new ResponseEntity<>(HttpStatus.CONFLICT);
+			}
+			if (e2.getStatus() == 503 || e2.getStatus() == 502) {
+				log.warn("The node handling the createConnection operation is crashed. Retry");
+				try {
+					Thread.sleep(75);
+				} catch (InterruptedException e1) {
+				}
+				return returnToken(session);
 			}
 			return getErrorResponse(e2);
 		}

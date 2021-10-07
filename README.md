@@ -36,6 +36,6 @@ A session hosted in a Media Node suffering a crash will be automatically re-crea
 
 1. Make sure your OpenVidu Enterprise cluster has at least 2 different Media Nodes.
 2. Connect 2 different users to the same session. They should both send and receive each other's video.
-3. Find out in which Media Node the session was located. You can call REST API method [GET Media Nodes](https://docs.openvidu.io/en/latest/reference-docs/REST-API/#get-openviduapimedia-nodes) to do so.
+3. Find out in which Media Node the session was located. You can call REST API method [GET Media Nodes](https://docs.openvidu.io/en/stable/reference-docs/REST-API/#get-all-medianodes) to do so.
 4. Terminate the machine hosting the session.
 5. After 3~4 seconds both users should automatically re-join the same session, successfully re-establishing the video streams.

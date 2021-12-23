@@ -243,6 +243,12 @@ function updateNumVideos(i) {
 		case 4:
 			$('video').addClass('four');
 			break;
+		case 5:
+			$('video').addClass('five');
+			break;
+		case 6:
+			$('video').addClass('six');
+			break;
 	}
 }
 
